@@ -53,7 +53,7 @@ function HTMLParser(string) {
     return div;
 }
 
-function loadAll1() {
+function loadAll() {
     var waitTime = 0;
     var bodyDiv = document.getElementById("hidden-div");
     bodyDiv.children[0].children[0].innerHTML = '<img src="https://media.giphy.com/media/xT8qBhpN14efJBZPnq/giphy.gif" alt="loading">';
@@ -71,51 +71,11 @@ function loadAll1() {
             'Sort by : <select id="sortType" style="margin-right: 10px;">' +
             '<option class="form" value="all">View all</option>' +
             '<option class="form" value="internetSpeeds">Internet Speeds</option>' +
-			'<option class="form" value="Storage">Storage Size</option>' +
             '<option class="form" disabled>More coming soon!</option>' +
             '</select>' +
             '</div>' +
             '</form>';
         savedDat = document.getElementById("list").cloneNode(true);
-		$('#sortType').change(function() {
-            var value = $(this).val();
-            if (value == "internetSpeeds"){
-                var div = document.getElementById("hidden-div");
-                var form = document.createElement("FORM");
-                form.className = "form-horizontal";
-                form.innerHTML = '<div id="Storage-div"class="browser-input">' +
-                    'Internet Speeds : <select id="Storage" style="margin-right: 10px;">' +
-                    '<option class="form" value="selectOne">Select one</option>' +
-					'<option class="form" value="1">1 GB</option>' +
-					'<option class="form" value="5">5 GB</option>' +
-                    '<option class="form" value="10">10 GB</option>' +
-                    '<option class="form" value="20">20 GB</option>' +
-                    '<option class="form" value="30">30 GB</option>' +
-                    '<option class="form" value="40">40 GB</option>' +
-                    '<option class="form" value="50">50 GB</option>' +
-                    '<option class="form" value="60">60 GB</option>' +
-                    '<option class="form" value="70">70 GB</option>' +
-                    '<option class="form" value="80">80 GB</option>' +
-                    '<option class="form" value="90">90 GB</option>' +
-                    '<option class="form" value="100">100 GB</option>' +
-                    '<option class="form" value="other">Other</option>' +
-                    '</select>' +
-                    '</div>';
-        div.appendChild(form);
-        $('#Storage').change(function() {
-            searchIPdat()
-        });
-        
-    }else if (value == "all"){
-        document.getElementById("Storage-div").remove();
-        document.getElementById("list").innerHTML = savedDat.innerHTML;    
-    }
-});
-        checkFavorites();
-        $.getScript(currentWebsiteURL + "/js/main.js.pagespeed.jm.oC0Po-3w4s.js", function() {});
-    }, (numberOfPages * 0.08) * 1000);
-}
-		
         $('#sortType').change(function() {
             var value = $(this).val();
             if (value == "internetSpeeds"){
@@ -190,69 +150,6 @@ function retrieveNextPage(page) {
     xmlhttp.send(null);
 
 }
-
-
-function searchIPdat1() {
-    var speed = document.getElementById("Storage").value;
-    if (speed == "selectOne"){
-        return
-    } else if (speed == "100") {
-        speed = "1 GB";
-    } else if (speed == "other") {
-        var normalSpeeds = ["1 GB", "5 GB", "10 GB", "20 GB", "30 GB", "40 GB", "50 GB", "60 GB", "70 GB", "80 GB", "90 GB", "100 GB"]
-        lis = savedDat.children;
-        var group = [];
-        for (var i in lis) {
-                try {
-                    foundSpeed = lis[i].children[2].children[0].children[0].innerText;
-                    if (ifIn(foundSpeed, normalSpeeds) === false) {
-                        if (ifIn('<li id="' + lis[i].id + '" >' + lis[i].innerHTML + "</li>", group) === false) {
-                            group.push('<li id="' + lis[i].id + '" >' + lis[i].innerHTML + "</li>");
-                        }
-                    }
-                } catch (err) {
-                    continue;
-                }
-        }
-        document.getElementById("list").innerHTML = group.join("\n");
-        checkFavorites();
-        $.getScript(currentWebsiteURL + "/js/main.js.pagespeed.jm.oC0Po-3w4s.js", function() {});
-        return
-    } else {
-        speed = speed + " Mbit/s";
-    }
-    lis = savedDat.children;
-    var group = [];
-    for (var i in lis) {
-            try {
-                var foundSpeed = lis[i].children[2].children[0].children[0].innerText;
-                
-                if (foundSpeed == speed) {
-                    
-                    if (ifIn('<li id="' + lis[i].id + '" >' + lis[i].innerHTML + "</li>", group) === false) {
-                        
-                        group.push('<li id="' + lis[i].id + '" >' + lis[i].innerHTML + "</li>");
-                    }
-                }
-            } catch (err) {
-                continue;
-            }
-    }
-    document.getElementById("list").innerHTML = group.join("\n");
-    checkFavorites();
-    $.getScript(currentWebsiteURL + "/js/main.js.pagespeed.jm.oC0Po-3w4s.js", function() {});
-}
-
-
-
-
-
-
-
-
-
-
-
 
 function searchIPdat() {
     var speed = document.getElementById("internetSpeed").value;
